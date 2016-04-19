@@ -25,7 +25,7 @@ class SearchBar extends Component {
 
     _search(keyword) {
         this.setState({keyword});
-        this.props.searchKeyworkd(keyword);
+        this.props.searchKeyword(keyword);
     }
 }
 

@@ -4,30 +4,28 @@ import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
 
 const API_KEY = 'xxx';
-
-/*const App = () => {
-    return (
-        <div className="row center-block">
-            <div className="col-sm-12"><SearchBar /></div>
-        </div>
-    );
-};*/
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {videos: []};
+        this.state = {
+            videos: [],
+            selectedVideo: null
+        };
 
         this._videoSearch('cat');
     }
 
     _videoSearch(keyword) {
         YTSearch({key: API_KEY, term: keyword}, (videos) => {
-            this.setState({videos})
-            console.log(videos);
+            this.setState({
+                videos: videos,
+                selectedVideo:videos[0]
+            })
         });
     }
 
@@ -36,10 +34,14 @@ class App extends React.Component {
 
         return (
             <div className="row center-block">
-                <div className="col-sm-12"><SearchBar searchKeyworkd={videoSearch}/></div>
+                <div className="col-sm-12"><SearchBar searchKeyword={videoSearch}/></div>
                 <div className="col-sm-12">
-                    <div className="col-sm-8">ok</div>
-                    <div className="col-sm-4"><VideoList videos={this.state.videos}/></div>
+                    <div className="col-sm-8"><VideoDetail video={this.state.selectedVideo}/></div>
+                    <div className="col-sm-4">
+                        <VideoList
+                            videoSelected={selectedVideo => this.setState({selectedVideo})}
+                            videos={this.state.videos} />
+                    </div>
                 </div>
             </div>
         );
